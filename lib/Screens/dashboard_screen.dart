@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'inspection_form_screen.dart';
 
-
 class DashboardScreen extends StatelessWidget {
   final String name;
   final String role;
@@ -15,19 +14,15 @@ class DashboardScreen extends StatelessWidget {
   });
 
   void _startInspection(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.push(
+      context,
       MaterialPageRoute(
-        builder: (_) => InspectionFormScreen(
-          token: token,
-          name: name,
-        ),
+        builder: (_) => InspectionFormScreen(name: name, token: token),
       ),
     );
   }
 
-
   void _viewReports(BuildContext context) {
-    // TODO: Navigate to past reports screen
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("View Past Reports tapped")),
     );

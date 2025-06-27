@@ -1,17 +1,14 @@
 buildscript {
-    ext.kotlin_version = '1.9.22'
+    ext.kotlin_version = '1.9.23'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.android.tools.build:gradle:8.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22"
-
     }
-
-
 }
 
 allprojects {
@@ -25,11 +22,12 @@ allprojects {
             if (details.requested.group == 'androidx.fragment') {
                 details.useVersion '1.6.2'
             }
+
+            // ✅ Removed force-downgrade of Kotlin
+            // Do NOT override org.jetbrains.kotlin version unless needed
         }
     }
 }
-
-
 
 rootProject.buildDir = '../build'
 subprojects {
@@ -42,4 +40,3 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
-

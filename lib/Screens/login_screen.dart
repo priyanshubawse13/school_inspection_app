@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dashboard_screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -21,9 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      if (mounted) {
-        _showSnack("Please enter email and password");
-      }
+      _showSnack("Please enter email and password");
       return;
     }
 
@@ -43,26 +40,26 @@ class _LoginScreenState extends State<LoginScreen> {
         final role = data['user']['role'];
         final token = data['token'];
 
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => DashboardScreen(name: name, role: role, token: token),
+            builder: (context) =>
+                DashboardScreen(name: name, role: role, token: token),
           ),
         );
       } else {
         final error = jsonDecode(response.body);
-        if (mounted) _showSnack(error['msg'] ?? "Login failed");
+        _showSnack(error['msg'] ?? "Login failed");
       }
     } catch (e) {
-      if (mounted) _showSnack("Error: $e");
+      _showSnack("Error: $e");
     } finally {
-      if (mounted) setState(() => isLoading = false);
+      setState(() => isLoading = false);
     }
   }
 
   void _showSnack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -80,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 8,
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -88,14 +86,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text("Login",
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 24),
                     TextField(
                       controller: emailController,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.email),
                         labelText: "Email",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -105,7 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock),
                         labelText: "Password",
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -115,13 +116,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 16),
                           backgroundColor: Colors.teal,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
                         ),
                         onPressed: login,
-                        child: const Text("Login", style: TextStyle(fontSize: 18)),
+                        child: const Text("Login",
+                            style: TextStyle(fontSize: 18)),
                       ),
                     )
                   ],
@@ -134,4 +137,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
